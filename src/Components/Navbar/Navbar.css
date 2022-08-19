@@ -1,0 +1,71 @@
+.nav {
+  width: 100%;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  background-color: #424766;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-family: "Josefin Sans", sans-serif;
+  z-index: 999;
+}
+.navLeft,
+.navRight {
+  flex: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navRight {
+  justify-content: flex-end;
+  margin-right: 10px;
+}
+.navIcon {
+  font-size: 20px;
+  color: #444;
+  cursor: pointer;
+}
+.navImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid white;
+  object-fit: cover;
+  cursor: pointer;
+}
+.navCenter {
+  flex: 6;
+}
+.navList {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.navListItem {
+  margin-left: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: 400;
+}
+.navSearchIcon {
+  margin-right: 15px;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+.searchInp {
+  height: 25px;
+  border-radius: 5px;
+  padding-left: 5px;
+  font-size: 18px;
+  margin-right: 5px;
+}
+.searchInp:focus {
+  outline-style: none;
+}
+.username {
+  margin-left: 5px;
+}
