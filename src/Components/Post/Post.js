@@ -5,7 +5,11 @@ function Post({ post }) {
   const PF = "https://blogapp-b-end.herokuapp.com/images/";
   return (
     <div className="post">
-      {post.photo && <img className="postImg" src={PF + post.photo} alt="" />}
+      {post.photo && (
+        <Link to={`/post/${post._id}`} className="link">
+          <img className="postImg" src={PF + post.photo} alt="" />
+        </Link>
+      )}
       <div className="postInfo">
         <div className="postCatgs">
           {post.categories.map((c) => (
