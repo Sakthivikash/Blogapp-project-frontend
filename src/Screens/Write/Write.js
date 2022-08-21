@@ -111,7 +111,9 @@ function Write() {
           {upladingImg ? (
             "Loading..."
           ) : (
-            <i className="fa fa-paper-plane">PUBLISH</i>
+            <>
+              PUBLISH <i className="fa fa-paper-plane"></i>
+            </>
           )}
         </button>
       </form>
