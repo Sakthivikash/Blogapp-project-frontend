@@ -14,7 +14,7 @@ function Home() {
     const fetchPosts = async () => {
       const res = await axios
         .get("https://blogapp-b-end.herokuapp.com/api/posts" + search)
-        .catch((error) => console.error());
+        .catch((error) => console.log(error));
       setPosts(res.data);
     };
     fetchPosts();

@@ -4,10 +4,11 @@ import { useParams } from "react-router-dom";
 import "./SinglePost.css";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
+import { toast } from "react-toastify";
+
 function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState({});
-  const PF = "https://blogapp-b-end.herokuapp.com/images/";
   const { user, dispatch } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -28,13 +29,18 @@ function SinglePost() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `https://blogapp-b-end.herokuapp.com/api/posts/${post._id}`,
-        {
-          data: { username: user.name },
-        },
-        { headers: { userId: user._id } }
-      );
+      const res = await axios
+        .delete(
+          `https://blogapp-b-end.herokuapp.com/api/posts/${post._id}`,
+          {
+            data: { username: user.name },
+          },
+          { headers: { userId: user._id } }
+        )
+        .catch((err) =>
+          toast.error(`${err.response.data}`, { theme: "colored" })
+        );
+      console.log(res);
       window.location.replace("/");
     } catch (err) {
       console.log(err);
@@ -70,7 +76,7 @@ function SinglePost() {
   return (
     <div className="singlePost">
       <div className="singlePostWrapper">
-        <img className="singlePostImg" src={PF + post.photo} alt="post-image" />
+        <img className="singlePostImg" src={post.photo} alt="post-image" />
         {updateMode ? (
           <input
             type="text"

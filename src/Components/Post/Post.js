@@ -2,12 +2,11 @@ import "./Post.css";
 import { Link } from "react-router-dom";
 
 function Post({ post }) {
-  const PF = "https://blogapp-b-end.herokuapp.com/images/";
   return (
     <div className="post">
       {post.photo && (
         <Link to={`/post/${post._id}`} className="link">
-          <img className="postImg" src={PF + post.photo} alt="" />
+          <img className="postImg" src={post.photo} alt="" />
         </Link>
       )}
       <div className="postInfo">

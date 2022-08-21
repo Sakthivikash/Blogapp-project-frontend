@@ -8,7 +8,6 @@ function Navbar() {
   const [searchMode, setSearchMode] = useState(false);
   const [search, setSearch] = useState("");
   const { user, dispatch } = useContext(Context);
-  const PF = "https://blogapp-b-end.herokuapp.com/images/";
 
   const handleLogout = async () => {
     const res = await axios
@@ -98,7 +97,7 @@ function Navbar() {
           >
             <img
               className="navImg"
-              src={PF + user.profilePic}
+              src={user.picture}
               alt={`${user.name}-profile-image`}
             />
             <h3 className="username">{user.name}</h3>

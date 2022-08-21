@@ -6,31 +6,56 @@ import { Context } from "../../context/Context";
 function Write() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [file, setFile] = useState(null);
   const { user, dispatch } = useContext(Context);
+
+  //Image upload states
+  const [image, setImage] = useState(null);
+  const [upladingImg, setUploadingImg] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  function validateImg(e) {
+    const file = e.target.files[0];
+    if (file.size >= 1048576) {
+      return alert("Max file size is 1mb");
+    } else {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }
+
+  async function uploadImage() {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "m61hjyvt");
+    try {
+      setUploadingImg(true);
+      let res = await fetch(
+        "https://api.cloudinary.com/v1_1/dbhtjsfnh/image/upload",
+        {
+          method: "post",
+          body: data,
+        }
+      );
+      const urlData = await res.json();
+      setUploadingImg(false);
+      return urlData.url;
+    } catch (error) {
+      setUploadingImg(false);
+      console.log(error);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!image) return alert("Please upload your profile picture");
+    const url = await uploadImage(image);
+    console.log(url);
     const newPost = {
       username: user.name,
       title,
       desc,
+      photo: url,
     };
-    if (file) {
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
-      data.append("file", file);
-      newPost.photo = filename;
-      try {
-        await axios.post(
-          "https://blogapp-b-end.herokuapp.com/api/upload",
-          data
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    }
     try {
       const res = await axios.post(
         "https://blogapp-b-end.herokuapp.com/api/posts",
@@ -50,12 +75,8 @@ function Write() {
   };
   return (
     <div className="write">
-      {file && (
-        <img
-          className="writeImg"
-          src={URL.createObjectURL(file)}
-          alt="post-image"
-        />
+      {image && (
+        <img className="writeImg" src={imagePreview} alt="post-image" />
       )}
       <form className="writeForm" onSubmit={handleSubmit}>
         <div className="writeFormGroup">
@@ -65,8 +86,9 @@ function Write() {
           <input
             type="file"
             id="fileInput"
+            // accept="image/png, image/jpeg"
             style={{ display: "none" }}
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={validateImg}
           />
           <input
             type="text"
@@ -85,7 +107,12 @@ function Write() {
           ></textarea>
         </div>
         <button className="writeSubmit" type="submit">
-          PUBLISH <i className="fa fa-paper-plane"></i>
+          {" "}
+          {upladingImg ? (
+            "Loading..."
+          ) : (
+            <i className="fa fa-paper-plane">PUBLISH</i>
+          )}
         </button>
       </form>
     </div>
